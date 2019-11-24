@@ -44,12 +44,23 @@
 
 
 </head>
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script type="text/javascript" src="/js/explode.js"></script>
+
+
+<!--动态线条背景-->
+<script type="text/javascript"
+        color="0,255,246" opacity='0.5' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/2.0.3/canvas-nest.js">
+</script>
+
 <body>
     <div class="wrapper">
         <header>
     <nav class="navbar">
         <div class="container">
-            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="navbar-header header-logo"><a href="/">Young&#39;s Blog</a></div>
             <div class="menu navbar-right">
                 
                     <a class="menu-item" href="/archives">Posts</a>
@@ -72,7 +83,7 @@
         <div class="container">
             <div class="navbar-header">
                 <div>
-                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                    <a href="/">Young&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
                 </div>
                 <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
             </div>
@@ -262,10 +273,11 @@
         </div>
         <footer id="footer" class="footer">
     <div class="copyright">
-        <span>© John Doe | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+        <span>© Young Lei | Powered by <a href="https://github.com/Young-Lei" target="_blank" rel="noopener">Young-Lei From Github</a></span>
     </div>
 </footer>
 
     </div>
 </body>
 </html>
+
