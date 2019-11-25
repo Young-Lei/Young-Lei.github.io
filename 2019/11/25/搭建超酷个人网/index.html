@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Young Lei">
+
+
+    <meta name="subtitle" content="Welcome">
+
+
+    <meta name="description" content="欢迎来到我的网站">
+
+
+    <meta name="keywords" content="iOS 生活 工作">
+
+
+<title>搭建超酷个人网站 | Young&#39;s personal website</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script type="text/javascript" src="/js/explode.js"></script>
+
+
+<!--动态线条背景-->
+<script type="text/javascript"
+        color="0,255,246" opacity='0.5' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/2.0.3/canvas-nest.js">
+</script>
+
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Young&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Young&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">搭建超酷个人网站</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Young Lei</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 25, 2019&nbsp;&nbsp;17:35:58</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="搭建超酷个人网站"><a href="#搭建超酷个人网站" class="headerlink" title="搭建超酷个人网站"></a>搭建超酷个人网站</h1><p>开局一张图</p>
+<p><img src="/Users/LeiYong/Blog-Lei/source/typora-user-images/image-20191125173533560.png" alt="image-20191125173533560"></p>
+<blockquote>
+<p>本文利用hexo + GitHub Page 搭建超酷的个人网站（个人感觉其他的商业网站也可以，如果你前端能力够强）。 话不多说，开题。</p>
+</blockquote>
+<hr>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><ol>
+<li><p><strong>GitHub</strong>？</p>
+<p>GitHub 是通过 Git 进行版本控制的软件源代码托管服务，由 GitHub 公司（曾称 Logical Awesome）的开发者 Chris Wanstrath、PJ Hyett 和 Tom Preston-Werner 使用 Ruby on Rails 编写而成。</p>
+<p>好处：</p>
+<ul>
+<li><p>全是静态文件，访问速度快；</p>
+</li>
+<li><p>免费方便，不用花一分钱就可以搭建一个自由的个人博客，不需要服务器不需要后台；</p>
+</li>
+<li><p>可以随意绑定自己的域名，不仔细看的话根本看不出来你的网站是基于github的；</p>
+</li>
+<li><p>数据绝对安全，基于github的版本管理，想恢复到哪个历史版本都行；</p>
+</li>
+<li><p>博客内容可以轻松打包、转移、发布到其它平台；</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Hexo</strong>？</p>
+<p>Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。</p>
+</li>
+<li><p><strong>GitHub + Hexo</strong>?</p>
+<p>GitHub博客主流的就是Jekyll和Hexo两种搭建方式</p>
+<ul>
+<li><p>Jekyll没有本地服务器，无法实现本地文章预览，需要上传到WEB容器中才能预览功能，而Hexo可以通过简单的命令实现本地预览功能，并直接发布到WEB容器中实现同步。</p>
+</li>
+<li><p>Jekyll主题和Hexo主题对比而言，Hexo主题更加简洁美观。</p>
+</li>
+</ul>
+</li>
+<li><p>准备工作</p>
+<ul>
+<li>有一个github账号，没有的话去注册一个；</li>
+<li>安装了node.js、npm，并了解相关基础知识；</li>
+<li>安装了node.js</li>
+<li>安装了hexo</li>
+</ul>
+</li>
+</ol>
+<p>这些安装的东西没有安装，不要紧，接下来的步骤，慢慢教你</p>
+<hr>
+<h2 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h2><ol>
+<li><p>登录账号 新建仓库</p>
+<p>这个仓库，相当于你的前端代码和配置的储存的仓库了，能够给你提供个人域名等。</p>
+<p><img src="/Users/LeiYong/Blog-Lei/source/typora-user-images/image-20191125160536006.png" alt="image-20191125160536006"></p>
+</li>
+<li><p>仓库配置</p>
+<p>这里最要的就是<code>Repository name</code>格式固定，必须为<code>你的用户名.github.io</code>，比如你的用户名为test， 则你新建的仓库就必须为<strong>test.github.io</strong>, 其他名称无效，且每个账号只能申请一个这样直接使用域名访问的仓库。</p>
+<p><img src="/Users/LeiYong/Blog-Lei/source/typora-user-images/image-20191125160615141.png" alt="image-20191125160615141"></p>
+</li>
+<li><p>修改域名</p>
+<p>当然，为了凸显你网页的高大上，你可以更改你的域名，利用更改DNS 映射记录就可以，自行百度</p>
+</li>
+</ol>
+<p>至此，github 的部分已完结</p>
+<hr>
+<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><ol>
+<li><p><a href="https://nodejs.org/en/" target="_blank" rel="noopener">装Node.js</a></p>
+</li>
+<li><p>安装hexo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建需要建立网站的文件夹(必须为空)</p>
+</li>
+<li><p>cd 到文件夹 初始化hexo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /MyBlog</span><br><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动服务(本地预览服务) 打开浏览器，访问http//localhost:4000 即可查看内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关联git</p>
+<ul>
+<li><p>打开_config.yml 文件，定位到deploy，根据自己的内容自行完成配置</p>
+<p><img src="/Users/LeiYong/Blog-Lei/source/typora-user-images/image-20191125172253696.png" alt="image-20191125172253696"></p>
+</li>
+</ul>
+</li>
+<li><p>上传到github 仓库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开，git 配置的<a href="https://test.github.io" target="_blank" rel="noopener">https://test.github.io</a> 即可看到网页更新了</p>
+</li>
+<li><p>默认为系统的主题，可以在hexo网站上选择自己喜欢的主题，并拷贝到/MyBlog/theme/ 下</p>
+</li>
+<li><p>修改主题</p>
+<ul>
+<li><p>将blog目录下_config.yml里的theme的名称<code>landscape</code>更改为<code>next</code>。</p>
+</li>
+<li><p>执行如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>配置你所选的主题 根据你选择的主题，参考主题仓库里的使用说明，配置你的主题信息</p>
+</li>
+</ol>
+<hr>
+<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><ol>
+<li>主题更改，主要关注里面几个文件<ul>
+<li>/MyBlog/theme/主题名/js   这里主要更改页面的特效等交互的脚本</li>
+<li>/MyBlog/theme/主题名/layout/layout.ejs  这个文件主要配置脚本运行位置以及时机</li>
+<li>/MyBlog/theme/_config.yml 这个主要配置主题的作者提供的可更改的内容啦</li>
+</ul>
+</li>
+</ol>
+<p>其实，前端大佬，应该比较了解这些结构了，可以随意更改。小菜不献丑了</p>
+<h4 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h4><p><a href="https://www.jianshu.com/p/cbf8ba8af532" target="_blank" rel="noopener">https://www.jianshu.com/p/cbf8ba8af532</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Young Lei</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yoursite.com/2019/11/25/%E6%90%AD%E5%BB%BA%E8%B6%85%E9%85%B7%E4%B8%AA%E4%BA%BA%E7%BD%91/">http://yoursite.com/2019/11/25/%E6%90%AD%E5%BB%BA%E8%B6%85%E9%85%B7%E4%B8%AA%E4%BA%BA%E7%BD%91/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 Young.inc LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>On the Way</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        <a href="/tags/%E5%B7%A5%E4%BD%9C/"># 工作</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();" target="_blank" rel="noopener">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/11/22/hello-world/">Hello World</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Young Lei | Powered by <a href="https://github.com/Young-Lei" target="_blank" rel="noopener">Young-Lei From Github</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
+
