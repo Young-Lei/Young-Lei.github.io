@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Young Lei">
+
+
+    <meta name="subtitle" content="Welcome">
+
+
+    <meta name="description" content="欢迎来到我的网站">
+
+
+    <meta name="keywords" content="iOS 生活 工作">
+
+
+<title>iOS Crash 日志获取、分析以及解决思路 | Young&#39;s Home Page</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script type="text/javascript" src="/js/explode.js"></script>
+
+
+<!--动态线条背景-->
+<script type="text/javascript"
+        color="0,255,246" opacity='0.5' zIndex="-2" count="200" src="//cdn.bootcss.com/canvas-nest.js/2.0.3/canvas-nest.js">
+</script>
+
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Young&#39;s Home</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">博客</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Young&#39;s Home</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">博客</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/tag">标签</a>
+                
+                    <a class="menu-item" href="/about">关于</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">iOS Crash 日志获取、分析以及解决思路</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Young Lei</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 29, 2019&nbsp;&nbsp;21:10:03</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <blockquote>
+<ol>
+<li>crash 日志获取</li>
+<li>crash 符号化</li>
+<li>crash 日志分析</li>
+</ol>
+</blockquote>
+<hr>
+<h2 id="Crash-日志获取"><a href="#Crash-日志获取" class="headerlink" title="Crash 日志获取"></a>Crash 日志获取</h2><h3 id="第三方监控Crash"><a href="#第三方监控Crash" class="headerlink" title="第三方监控Crash"></a>第三方监控Crash</h3><p>第三方监控系统，crash收集只是其中之一，还有很多类似于埋点等其他功能。一般而言，第三方监控，不受设备和地理位置的限制，所有的crash大部分都能搜集并在网站查看，并且能够自动符号化，对于查找bug，解决问题，比较方便快捷。对于一些大型的BAT公司，都有自己单独一套的工具（数据为王）。当前专业的第三方监控系统，主要有以下几个</p>
+<ul>
+<li>友盟</li>
+<li>TalkingData</li>
+<li>极光</li>
+<li>Fabric</li>
+</ul>
+<h3 id="利用Xcode工具"><a href="#利用Xcode工具" class="headerlink" title="利用Xcode工具"></a>利用Xcode工具</h3><p>利用Xcode工具有三种方式收集到Crash</p>
+<ol>
+<li><p>View Device Log</p>
+<p>将设备连接到Xcode，通过<code>Window</code>-<code>Devices and Simulators</code>-<code>Devices</code>-<code>View Device Logs</code> 查看crash日志，可以通过导出，导出到本地。</p>
+</li>
+<li><p>Organizer</p>
+<p>将设备连接到Xcode，通过<code>Window</code>-<code>Organizer</code>-<code>APP名称</code>-<code>Crashes</code> 查看crash日志，且此处的crash日志是已经进行符号化的，方便。但是，</p>
+<p>在这里看到crash 日志必备几个条件</p>
+<ul>
+<li>app 通过Xcode Archives 过</li>
+<li>当前app 已上传至App Store，</li>
+<li>联网</li>
+</ul>
+<p>这种crash日志，是基于App Store Connect 的，个人感觉和 Connect 查看到的crash 日志应该一致。且只能查看两天以前的</p>
+</li>
+</ol>
+<h3 id="查看设备分析报告"><a href="#查看设备分析报告" class="headerlink" title="查看设备分析报告"></a>查看设备分析报告</h3><p>通过查看iPhone上<code>设置</code>-<code>隐私</code>-<code>分析</code>-<code>分析数据</code>中可以看到很多关于Crash的日志。导入到电脑中。并将属性更改为<code>.crash</code>即可查，此处的crash报告也是未经符号化的，都是地址信息</p>
+<h3 id="通过第三方PC端软件"><a href="#通过第三方PC端软件" class="headerlink" title="通过第三方PC端软件"></a>通过第三方PC端软件</h3><p>可以通过itools工具获取crash log，打开itools，连接iPhone设备，打开<code>高级功能</code>-<code>崩溃日志</code> 即可获得crash 日志</p>
+<h3 id="通过itunes获取"><a href="#通过itunes获取" class="headerlink" title="通过itunes获取"></a>通过itunes获取</h3><p>将设备链接到mac或者windows上，同步到iTunes后再从电脑的目录下获取crash log</p>
+<p>Mac OS X：~/Library/Logs/CrashReporter/MobileDevice</p>
+<p>Windows XP：C:\Documents and Settings\Application Data\Apple computer\Logs\CrashReporter</p>
+<p>Windows 7/Vista: C:\Users\计算机登录名\AppData\Roaming\Apple Computer\Logs\CrashReporter\MobileDevice</p>
+<p>以上只有通过第三方监控以及App Store Connect 和基于此的方式看到的crash自动符号化，其他都是十六进制地址需要手动进行符号化处理</p>
+<h2 id="Crash-日志符号化"><a href="#Crash-日志符号化" class="headerlink" title="Crash 日志符号化"></a>Crash 日志符号化</h2><p>crash日志符号化，有很多第三方软件可以使用，为了便捷，个人还是比较喜欢手动命令行输入方式，这里做个记录以备不时之需。</p>
+<p>前提条件</p>
+<ul>
+<li>.dYSM文件</li>
+<li>.crash文件</li>
+<li>应用程序文件 (appName.app文件，把IPA文件后缀改为zip，然后解压，Payload目录下的appName.app文件), 这里的appName是你的应用程序的名称。</li>
+<li>symbolicatecrash工具</li>
+</ul>
+<ol>
+<li><p>将三个文件放置于同一个文件夹下</p>
+</li>
+<li><p>确保.app文件和.crash文件的uuid 保持一致，这样才能确保能够被解析</p>
+</li>
+<li><p>查询.crash文件的uuid</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">"crashName"</span> *crash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查询.app的uuid</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun dwarfdump --uuid &quot;appName.app&quot;/&quot;appName&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一致后再继续下面的步骤</p>
+</li>
+<li><p>分别执行以下命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer </span><br><span class="line"></span><br><span class="line">/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/PrivateFrameworks/DTDeviceKitBase.framework/Versions/A/Resources/symbolicatecrash <span class="string">'appName'</span>.crash <span class="string">'appName'</span>.app &gt; <span class="string">'appName'</span>.<span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>符号化后的crash日志，就在.log文件中，直接查看即可。</p>
+</li>
+</ol>
+<h2 id="Crash日志分析"><a href="#Crash日志分析" class="headerlink" title="Crash日志分析"></a>Crash日志分析</h2><p>###基本结构</p>
+<p>crash日志，一般来说主要包括四方面的内容，下面一一介绍，并对每个字段做一一介绍</p>
+<h4 id="1-Process-Information-进程信息"><a href="#1-Process-Information-进程信息" class="headerlink" title="1.Process Information(进程信息)"></a>1.Process Information(进程信息)</h4><p><img src="http://api.cocoachina.com/uploads/20150122/1421898355186263.png" alt="230718553901251.png"></p>
+<p><strong>Incident Identifier</strong>： 崩溃报告的唯一标识符，区分不同的crash</p>
+<p><strong>CrashReporter Key</strong>：设备标识相对应的唯一键值，通常同一个设备上同一版本的APP发生Crash时，该值都是一样</p>
+<p><strong>Hardware Model</strong>：如图，设备类型</p>
+<p><strong>Process</strong>：代表Crash的进程名称，一般的组成形式：’appName’[crash时的进程ID]</p>
+<p><strong>Path</strong>：<em>可执行文件</em> 在手机上的存储位置</p>
+<p><strong>Identifier</strong>：Bundle ID</p>
+<p><strong>Version</strong>：版本号</p>
+<p><strong>Code Type</strong>：当前App的CPU架构</p>
+<p><strong>Parent Process</strong>：当前进程的父进程，由于iOS中App通常都是单进程，故，一般为launchd</p>
+<h4 id="2-Basic-Information-基本信息"><a href="#2-Basic-Information-基本信息" class="headerlink" title="2.Basic Information(基本信息)"></a>2.Basic Information(基本信息)</h4><p><img src="http://api.cocoachina.com/uploads/20150122/1421898468773154.png" alt="052025393435295.png"></p>
+<p><strong>Date/Time</strong>： 发生crash的时间</p>
+<p><strong>OS Version</strong>：iOS的系统版本</p>
+<p><strong>Report Version</strong>：crash日志的格式，基本上为104</p>
+<p>####3.Exception</p>
+<p><img src="http://api.cocoachina.com/uploads/20150122/1421898497410665.png" alt="052029230317758.png"></p>
+<p><strong>Exception Type</strong>：异常类型</p>
+<p><strong>Exception Subtype</strong>：异常子类型</p>
+<p><strong>Crashed Thread</strong>：发生异常的线程号 即：(<em>Triggered by Thread</em>)</p>
+<h4 id="4-Thread-Backtrace"><a href="#4-Thread-Backtrace" class="headerlink" title="4.Thread Backtrace"></a>4.Thread Backtrace</h4><p><img src="http://api.cocoachina.com/uploads/20150122/1421898549917466.png" alt="052034366876268.png"></p>
+<p>此为发生Crash的线程的堆栈信息，从上到下分别代表的调用顺序，最上面的一个则为异常的位置，依次往下则为API的调用顺序。</p>
+<h4 id="5-Thread-State"><a href="#5-Thread-State" class="headerlink" title="5.Thread State"></a>5.Thread State</h4><p><img src="http://api.cocoachina.com/uploads/20150122/1421898612176999.png" alt="052036460005028.png"></p>
+<p>对于开发者而言，这部分一般不用关心，此为crash发生的时刻，线程的状态。</p>
+<h4 id="6-Binary-Images"><a href="#6-Binary-Images" class="headerlink" title="6.Binary Images"></a>6.Binary Images</h4><p><img src="http://api.cocoachina.com/uploads/20150122/1421898651953431.png" alt="052038193591674.png"></p>
+<p>Crash时刻App加载的所有的库，其中第一行是Crash发生时我们App可执行文件的信息</p>
+<p>以上是Crash日志的全部内容，有助于开发者定位到具体的bug位置，并作出分析</p>
+<h3 id="常见的Crash类型"><a href="#常见的Crash类型" class="headerlink" title="常见的Crash类型"></a>常见的Crash类型</h3><h4 id="1-Watchdog-timeout"><a href="#1-Watchdog-timeout" class="headerlink" title="1.Watchdog timeout"></a>1.Watchdog timeout</h4><p><strong>表现形式</strong>：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Exception Code：Exception Code：<span class="number">0x8badf00d</span>  <span class="comment">//不太直观，可以读成“eat bad food”，意思是don‘t block main thread</span></span><br><span class="line">Application Specific Information：</span><br><span class="line">com.xxx.yyy　　 failed to resume <span class="keyword">in</span> time</span><br></pre></td></tr></table></figure>
+
+<p><strong>解决思路</strong>：检查App 初始化时做的事情是否正确，是否在主线程请求网络或做了一些耗时的事情导致正常初始化流程阻塞</p>
+<p>Ps:通常系统允许一个App从启动到可以相应用户事件的时间最多为5S，如果超过了5S，App就会被系统终止掉。在Launch，resume，suspend，quit时都会有相应的时间要求。在Highlight Thread里面我们可以看到被终止时调用到的位置，xxxAppDelegate加上行号。</p>
+<h4 id="2-User-force-quit"><a href="#2-User-force-quit" class="headerlink" title="2.User force-quit"></a>2.User force-quit</h4><p><strong>表现形式</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Exception Codes: 0xdeadfa11, deadfall</span><br></pre></td></tr></table></figure>
+
+<p>这个强制退出跟我们平时所说的kill掉后台任务操作还不太一样，通常在程序bug造成系统无法响应时可以采用长按电源键，当屏幕出现关机确认画面时按下Home键即可关闭当前程序。</p>
+<h4 id="3-Low-Memory-termination"><a href="#3-Low-Memory-termination" class="headerlink" title="3.Low Memory termination"></a>3.Low Memory termination</h4><p><strong>表现形式</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Exception Codes: 0xdead10cc, deadlock</span><br></pre></td></tr></table></figure>
+
+<p>跟一般的Crash结构不太一样，通常有Free pages，Wired Pages，Purgeable pages，largest process 组成，同事会列出当前时刻系统运行所有进程的信息。</p>
+<h4 id="4-Crash-due-to-bugs"><a href="#4-Crash-due-to-bugs" class="headerlink" title="4.Crash due to bugs"></a>4.Crash due to bugs</h4><p>因为程序bug导致的Crash通常千奇百怪，很难一概而论。大部分情况通过Crash日志就可以定位出问题，当然也不排除部分疑难杂症看半天都不值问题出在哪儿。这个就只能看功底了，一点点找，总是能发现蛛丝马迹。实在看不出来时还可以求助于Google大神，总有人遇到和你一样的Bug</p>
+<p>###常见的Exception Code 以及 Exception Type</p>
+<h4 id="1-Exception-Type"><a href="#1-Exception-Type" class="headerlink" title="1.Exception Type"></a>1.Exception Type</h4><p>​    1）EXC_BAD_ACCESS</p>
+<p>​        此类型的Excpetion是我们最长碰到的Crash，通常用于访问了不改访问的内存导致。一般EXC_BAD_ACCESS    后面的”()”还会带有补充信息。        </p>
+<p>​        <strong>SIGSEGV:</strong> 通常由于重复释放对象导致，这种类型在切换了ARC以后应该已经很少见到了。</p>
+<p>​        <strong>SIGABRT:</strong>  收到Abort信号退出，通常Foundation库中的容器为了保护状态正常会做一些检测，例如插入    nil到数组中等会遇到此类错误。</p>
+<p>​        <strong>SEGV:</strong>（Segmentation  Violation），代表无效内存地址，比如空指针，未初始化指针，栈溢出等；</p>
+<p>​        <strong>SIGBUS：</strong>总线错误，与 SIGSEGV 不同的是，SIGSEGV 访问的是无效地址，而 SIGBUS 访问的是有效地        址，但总线访问异常(如地址对齐问题)</p>
+<p>​        <strong>SIGILL：</strong>尝试执行非法的指令，可能不被识别或者没有权限</p>
+<p>​    2）EXC_BAD_INSTRUCTION</p>
+<p>​        此类异常通常由于线程执行非法指令导致</p>
+<p>​    3）EXC_ARITHMETIC</p>
+<p>​        除零错误会抛出此类异常</p>
+<p>####2.Exception Code</p>
+<p>​    <strong>0xbaaaaaad</strong> 此种类型的log意味着该Crash log并非一个真正的Crash，它仅仅只是包含了整个系统某一时刻的运行状态。通常可以通过同时按Home键和音量键，可能由于用户不小心触发</p>
+<p>​    <strong>0xbad22222</strong>当VOIP程序在后台太过频繁的激活时，系统可能会终止此类程序</p>
+<p>​    <strong>0x8badf00d</strong>这个前面已经介绍了，程序启动或者恢复时间过长被watch dog终止</p>
+<p>​    <strong>0xc00010ff</strong>程序执行大量耗费CPU和GPU的运算，导致设备过热，触发系统过热保护被系统终止</p>
+<p>​    <strong>0xdead10cc</strong>程序退到后台时还占用系统资源，如通讯录被系统终止</p>
+<p>​    <strong>0xdeadfa11</strong>前面也提到过，程序无响应用户强制关闭</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过crash的基本类型，已经Exception Code &amp; Exception Type 基本能够判断出crash的类型，在通过堆栈信息调用的API 顺序，复现或者分析crash，一般而言就能够找出bug的万恶之源。</p>
+<p><strong>写在最后</strong>：一般而言，真正的crash，都能够很好的通过排查解决，但是，有些Abort（应用在前台被强制杀死并且无法获取堆栈）和OOM（out of memory）导致的APP崩溃的问题，需要更强硬的技术功底才能够排查。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Young Lei</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://young-lei.github.io/2019/11/29/">https://young-lei.github.io/2019/11/29/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 Young.inc LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>On the Way</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/iOS/"># iOS</a>
+                    
+                        <a href="/tags/%E5%B7%A5%E4%BD%9C/"># 工作</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();" target="_blank" rel="noopener">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/11/25/">搭建超酷个人网站</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Young Lei | Powered by <a href="https://github.com/Young-Lei" target="_blank" rel="noopener">Young-Lei From Github</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
+
