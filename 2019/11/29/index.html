@@ -281,8 +281,7 @@
 <li><p>符号化后的crash日志，就在.log文件中，直接查看即可。</p>
 </li>
 </ol>
-<h2 id="Crash日志分析"><a href="#Crash日志分析" class="headerlink" title="Crash日志分析"></a>Crash日志分析</h2><p>###基本结构</p>
-<p>crash日志，一般来说主要包括四方面的内容，下面一一介绍，并对每个字段做一一介绍</p>
+<h2 id="Crash日志分析"><a href="#Crash日志分析" class="headerlink" title="Crash日志分析"></a>Crash日志分析</h2><h3 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h3><p>crash日志，一般来说主要包括四方面的内容，下面一一介绍，并对每个字段做一一介绍</p>
 <h4 id="1-Process-Information-进程信息"><a href="#1-Process-Information-进程信息" class="headerlink" title="1.Process Information(进程信息)"></a>1.Process Information(进程信息)</h4><p><img src="http://api.cocoachina.com/uploads/20150122/1421898355186263.png" alt="230718553901251.png"></p>
 <p><strong>Incident Identifier</strong>： 崩溃报告的唯一标识符，区分不同的crash</p>
 <p><strong>CrashReporter Key</strong>：设备标识相对应的唯一键值，通常同一个设备上同一版本的APP发生Crash时，该值都是一样</p>
@@ -297,8 +296,7 @@
 <p><strong>Date/Time</strong>： 发生crash的时间</p>
 <p><strong>OS Version</strong>：iOS的系统版本</p>
 <p><strong>Report Version</strong>：crash日志的格式，基本上为104</p>
-<p>####3.Exception</p>
-<p><img src="http://api.cocoachina.com/uploads/20150122/1421898497410665.png" alt="052029230317758.png"></p>
+<h4 id="3-Exception"><a href="#3-Exception" class="headerlink" title="3.Exception"></a>3.Exception</h4><p><img src="http://api.cocoachina.com/uploads/20150122/1421898497410665.png" alt="052029230317758.png"></p>
 <p><strong>Exception Type</strong>：异常类型</p>
 <p><strong>Exception Subtype</strong>：异常子类型</p>
 <p><strong>Crashed Thread</strong>：发生异常的线程号 即：(<em>Triggered by Thread</em>)</p>
@@ -323,8 +321,7 @@
 
 <p>跟一般的Crash结构不太一样，通常有Free pages，Wired Pages，Purgeable pages，largest process 组成，同事会列出当前时刻系统运行所有进程的信息。</p>
 <h4 id="4-Crash-due-to-bugs"><a href="#4-Crash-due-to-bugs" class="headerlink" title="4.Crash due to bugs"></a>4.Crash due to bugs</h4><p>因为程序bug导致的Crash通常千奇百怪，很难一概而论。大部分情况通过Crash日志就可以定位出问题，当然也不排除部分疑难杂症看半天都不值问题出在哪儿。这个就只能看功底了，一点点找，总是能发现蛛丝马迹。实在看不出来时还可以求助于Google大神，总有人遇到和你一样的Bug</p>
-<p>###常见的Exception Code 以及 Exception Type</p>
-<h4 id="1-Exception-Type"><a href="#1-Exception-Type" class="headerlink" title="1.Exception Type"></a>1.Exception Type</h4><p>​    1）EXC_BAD_ACCESS</p>
+<h3 id="常见的Exception-Code-以及-Exception-Type"><a href="#常见的Exception-Code-以及-Exception-Type" class="headerlink" title="常见的Exception Code 以及 Exception Type"></a>常见的Exception Code 以及 Exception Type</h3><h4 id="1-Exception-Type"><a href="#1-Exception-Type" class="headerlink" title="1.Exception Type"></a>1.Exception Type</h4><p>​    1）EXC_BAD_ACCESS</p>
 <p>​        此类型的Excpetion是我们最长碰到的Crash，通常用于访问了不改访问的内存导致。一般EXC_BAD_ACCESS    后面的”()”还会带有补充信息。        </p>
 <p>​        <strong>SIGSEGV:</strong> 通常由于重复释放对象导致，这种类型在切换了ARC以后应该已经很少见到了。</p>
 <p>​        <strong>SIGABRT:</strong>  收到Abort信号退出，通常Foundation库中的容器为了保护状态正常会做一些检测，例如插入    nil到数组中等会遇到此类错误。</p>
@@ -335,8 +332,7 @@
 <p>​        此类异常通常由于线程执行非法指令导致</p>
 <p>​    3）EXC_ARITHMETIC</p>
 <p>​        除零错误会抛出此类异常</p>
-<p>####2.Exception Code</p>
-<p>​    <strong>0xbaaaaaad</strong> 此种类型的log意味着该Crash log并非一个真正的Crash，它仅仅只是包含了整个系统某一时刻的运行状态。通常可以通过同时按Home键和音量键，可能由于用户不小心触发</p>
+<h4 id="2-Exception-Code"><a href="#2-Exception-Code" class="headerlink" title="2.Exception Code"></a>2.Exception Code</h4><p>​    <strong>0xbaaaaaad</strong> 此种类型的log意味着该Crash log并非一个真正的Crash，它仅仅只是包含了整个系统某一时刻的运行状态。通常可以通过同时按Home键和音量键，可能由于用户不小心触发</p>
 <p>​    <strong>0xbad22222</strong>当VOIP程序在后台太过频繁的激活时，系统可能会终止此类程序</p>
 <p>​    <strong>0x8badf00d</strong>这个前面已经介绍了，程序启动或者恢复时间过长被watch dog终止</p>
 <p>​    <strong>0xc00010ff</strong>程序执行大量耗费CPU和GPU的运算，导致设备过热，触发系统过热保护被系统终止</p>
